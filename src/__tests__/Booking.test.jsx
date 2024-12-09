@@ -5,8 +5,15 @@ import { BrowserRouter } from 'react-router-dom';
 
 describe('Booking', () => {
   it('should render booking', () => {
-    render(<Booking />);
-    console.log('hej');
-    screen.debug();
+    render(
+      <BrowserRouter>
+        <Booking />
+      </BrowserRouter>
+    );
   });
+  it('should be able to pick date and time from calendar', () => {});
+
+  it('should be able to input minimum of one character', () => {});
+
+  it('should show error when shoes are not selected', () => {});
 });
