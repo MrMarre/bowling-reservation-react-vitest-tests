@@ -1,16 +1,16 @@
-import "./Confirmation.scss";
-import { useLocation } from "react-router-dom";
+import './Confirmation.scss';
+import { useLocation } from 'react-router-dom';
 
-import Top from "../components/Top/Top";
-import Navigation from "../components/Navigation/Navigation";
-import Input from "../components/Input/Input";
+import Top from '../components/Top/Top';
+import Navigation from '../components/Navigation/Navigation';
+import Input from '../components/Input/Input';
 
 function Confirmation() {
   const { state } = useLocation();
 
   const confirmation =
     state?.confirmationDetails ||
-    JSON.parse(sessionStorage.getItem("confirmation"));
+    JSON.parse(sessionStorage.getItem('confirmation'));
 
   return (
     <section className="confirmation">
@@ -20,13 +20,15 @@ function Confirmation() {
         <form className="confirmation__details">
           <Input
             label="When"
+            name="When"
             type="text"
             customClass="confirmation__input"
-            defaultValue={confirmation.when.replace("T", " ")}
+            defaultValue={confirmation.when.replace('T', ' ')}
             disabled="disabled"
           />
           <Input
             label="Who"
+            name="Who"
             type="text"
             customClass="confirmation__input"
             defaultValue={confirmation.people}
@@ -34,6 +36,7 @@ function Confirmation() {
           />
           <Input
             label="Lanes"
+            name="Lanes"
             type="text"
             customClass="confirmation__input"
             defaultValue={confirmation.lanes}
@@ -41,6 +44,7 @@ function Confirmation() {
           />
           <Input
             label="Booking number"
+            name="Booking number"
             type="text"
             customClass="confirmation__input"
             defaultValue={confirmation.id}

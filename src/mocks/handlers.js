@@ -2,19 +2,33 @@ import { HttpResponse, http } from 'msw';
 
 // Hur payloaden ser ut nedan:
 // {when: "2024-12-10T13:00", lanes: "1", people: "2", shoes: ["43", "40"]}
-const payload = {
-  when: '2024-12-10T13:00',
-  lanes: '1',
-  people: '2',
-  shoes: ['43', '40'],
-};
+// const payload = {
+
+//   when: '2024-12-10T13:00',
+//   lanes: '1',
+//   people: '2',
+//   shoes: ['43', '40'],
+// };
 
 export const handlers = [
   // * basic från sidan
   http.post(
     'https://h5jbtjv6if.execute-api.eu-north-1.amazonaws.com',
-    ({ request }) => {
-      return HttpResponse.json({});
+    async ({ request }) => {
+      const { shoes, people, lanes, when } = await request.json();
+
+      const pricePerPerson = 120 * Number(people);
+      const pricePerLane = 100 * Number(lanes);
+      const total = pricePerPerson + pricePerLane;
+
+      return HttpResponse.json({
+        id: 'STR1070HNFU',
+        shoes,
+        people,
+        lanes,
+        when,
+        price: total,
+      });
     }
   ),
 ];
