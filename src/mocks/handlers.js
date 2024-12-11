@@ -22,8 +22,10 @@ export const handlers = [
       const total = pricePerPerson + pricePerLane;
 
       return HttpResponse.json({
-        id: 'STR1070HNFU',
+        active: true,
+        id: 'STR1070STFU',
         shoes,
+
         people,
         lanes,
         when,

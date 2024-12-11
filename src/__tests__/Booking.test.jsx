@@ -7,16 +7,16 @@ import {
   waitFor,
 } from '@testing-library/react';
 import Booking from '../views/Booking';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 
 describe('Booking', () => {
   let dateInput, timeInput, peopleInput, lanesInput, submitBtn, addShoeBtn;
 
   beforeEach(() => {
     render(
-      <BrowserRouter>
+      <MemoryRouter>
         <Booking />
-      </BrowserRouter>
+      </MemoryRouter>
     );
     dateInput = screen.getByLabelText(/date/i);
     timeInput = screen.getByLabelText(/time/i);
@@ -72,8 +72,9 @@ describe('Booking', () => {
     for (let i = 0; i < 2; i++) {
       fireEvent.change(inputShoeSize[i], { target: { value: '42' } });
     }
-    fireEvent.click(submitBtn);
-
+    await waitFor(() => {
+      fireEvent.click(submitBtn);
+    });
     await waitFor(() => {
       expect(
         screen.getByText(/alla skor måste vara ifyllda/i)
@@ -144,7 +145,7 @@ describe('Booking', () => {
     expect(screen.getAllByText('-').length).toBe(3);
   });
 
-  it('should be able to do a complete booking', () => {
+  it('should be able to do a complete booking', async () => {
     expect(dateInput).toBeInTheDocument();
     expect(timeInput).toBeInTheDocument();
     expect(peopleInput).toBeInTheDocument();
@@ -164,8 +165,9 @@ describe('Booking', () => {
     for (let i = 0; i < numberOfPeople; i++) {
       fireEvent.change(inputShoeSize[i], { target: { value: '35' } });
     }
-    fireEvent.click(submitBtn);
-
+    await waitFor(() => {
+      fireEvent.click(submitBtn);
+    });
     expect(dateInput.value).toBe('2024-12-10');
     expect(timeInput.value).toBe('13:00');
     expect(peopleInput.value).toBe('1');
@@ -173,5 +175,7 @@ describe('Booking', () => {
     inputShoeSize.forEach((input) => {
       expect(input.value).toBe('35');
     });
+
+    // ! Du kanske skall passa på att rendera view-confirmation här!?
   });
 });

@@ -8,6 +8,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text'],
+      exclude: ['./src/main.jsx', './src/App.jsx', './src/router.jsx'],
     },
     globals: true,
     environment: 'jsdom',
