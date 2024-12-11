@@ -7,7 +7,8 @@ export default defineConfig({
   test: {
     coverage: {
       provider: 'v8',
-      reporter: ['text'],
+      reporter: ['text', 'json', 'lcov', 'json-summary'],
+      include: ['src/**/*.js', 'src/**/*.jsx'],
       exclude: ['./src/main.jsx', './src/App.jsx', './src/router.jsx'],
     },
     globals: true,
