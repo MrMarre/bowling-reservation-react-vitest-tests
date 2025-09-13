@@ -11,16 +11,26 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Set up Node.js
-        uses: actions/setup-node@v3
-      - name: Remove node_modules and package-lock.json
-        run: |
-          rm -rf node_modules
-          rm -f package-lock.json
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Use LTS or your project's node version
+
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+
       - name: Run tests
         run: npm test
+
+      - name: Generate coverage
+        run: npm run coverage # Ensure you have a 'coverage' script
+
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
 
   check-coverage:
     runs-on: ubuntu-latest
@@ -28,13 +38,18 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Download coverage artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-report
+
       - name: Check test coverage
         run: |
           if [ ! -f ./coverage/coverage-summary.json ]; then
             echo "Coverage report not found!"
             exit 1
           fi
-          echo "Coverage report found"
           COVERAGE=$(cat ./coverage/coverage-summary.json | jq .total.lines.pct)
           echo "Test coverage is ${COVERAGE}%"
           if (( $(echo "$COVERAGE < 90" | bc -l) )); then
@@ -51,16 +66,21 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v4
-      - name: Install modules
-        run: npm install
+
+      - name: Install dependencies
+        run: npm ci
+
       - name: Build dist
         run: npm run build
+
       - name: Setup pages
         uses: actions/configure-pages@v4
+
       - name: Upload dist folder
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v2
         with:
           path: './dist'
+
       - name: Deploy to Github Pages
         id: deployment
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v3
