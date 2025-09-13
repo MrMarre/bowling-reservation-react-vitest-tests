@@ -31,6 +31,7 @@ jobs:
         with:
           name: coverage-report
           path: coverage/
+          overwrite: true
 
   check-coverage:
     runs-on: ubuntu-latest
